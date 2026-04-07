@@ -510,10 +510,10 @@ footer {
   footer { padding: 50px 20px 30px; }
   .footer-grid { grid-template-columns: 1fr; gap: 28px; text-align: center; }
 
-  .marquee-band { padding: 12px 0; }
-  .marquee-row .marquee-item { font-size: 20px; padding: 0 16px; }
-  .marquee-row .marquee-item .fleur-sep { margin: 0 12px; }
-  .marquee-row .marquee-item .fleur-sep svg { width: 14px; height: 14px; }
+  .marquee-band { padding: 10px 0; background: var(--card); }
+  .marquee-row .marquee-item { font-size: 18px; padding: 0 14px; color: var(--text); }
+  .marquee-row .marquee-item .fleur-sep { margin: 0 10px; }
+  .marquee-row .marquee-item .fleur-sep svg { width: 12px; height: 12px; }
 
   .urgency-bar { font-size: 12px; padding: 8px 16px; }
   .urgency-bar .urgency-inner { flex-wrap: wrap; gap: 6px; }
@@ -806,7 +806,11 @@ footer {
       loaded++;
       var pct = Math.round((loaded / totalFrames) * 100);
       loaderFill.style.width = pct + '%';
-      if (loaded === 1) drawFrame(0);
+      if (loaded === 1) {
+        drawFrame(0);
+        // Hide fallback background once canvas is rendering
+        document.querySelector('.hero-sticky').style.backgroundImage = 'none';
+      }
       if (loaded >= Math.min(totalFrames * 0.2, 30)) {
         var loader = document.getElementById('loader');
         if (loader && loader.style.opacity !== '0') {
