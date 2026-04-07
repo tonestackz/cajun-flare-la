@@ -119,7 +119,6 @@ nav.scrolled {
 /* Content wrapper sits above the hero stacking context */
 .content-wrap {
   position: relative; z-index: 2; background: var(--bg);
-  padding-bottom: 1px; /* prevent margin collapse */
 }
 #heroCanvas {
   position: absolute; top: 0; left: 0; display: block; z-index: 1;
@@ -466,8 +465,8 @@ footer {
   .nav-links { display: none; }
   .nav-hamburger { display: block; }
 
-  /* Hero — shorter on mobile so image stays visible */
-  .hero { height: 200vh; }
+  /* Hero — much shorter on mobile, no phantom scroll */
+  .hero { height: 150vh; }
   .hero h1 { font-size: clamp(32px, 10vw, 56px); }
   .hero .subtitle {
     display: inline; padding: 4px 12px; font-size: 14px;
@@ -1031,6 +1030,17 @@ footer {
     barHeight = urgencyBar.offsetHeight;
     updateNavPos();
   });
+
+  /* ─── Clamp scroll — prevent scrolling past footer ─── */
+  var contentWrap = document.querySelector('.content-wrap');
+  if (contentWrap) {
+    window.addEventListener('scroll', function() {
+      var maxScroll = contentWrap.offsetTop + contentWrap.offsetHeight - window.innerHeight;
+      if (window.scrollY > maxScroll) {
+        window.scrollTo(0, maxScroll);
+      }
+    }, { passive: false });
+  }
 
 })();
 </script>
