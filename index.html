@@ -93,7 +93,7 @@ nav.scrolled {
 }
 .nav-hamburger svg { stroke: var(--text); }
 .mobile-menu {
-  display: none; position: fixed; inset: 0; z-index: 99;
+  display: none; position: fixed; inset: 0; z-index: 102;
   background: rgba(26,18,16,0.97); backdrop-filter: blur(20px);
   flex-direction: column; align-items: center; justify-content: center; gap: 32px;
 }
@@ -496,6 +496,7 @@ footer {
   }
 
   .cta-section { padding: 60px 24px; min-height: auto; }
+  .explode-btn { width: 100%; max-width: 300px; padding: 18px 24px; }
 
   .about-header { flex-direction: column; text-align: center; }
   .about-section { padding: 50px 20px; }
@@ -1035,16 +1036,6 @@ footer {
     updateNavPos();
   });
 
-  /* ─── Clamp scroll — prevent scrolling past footer ─── */
-  var contentWrap = document.querySelector('.content-wrap');
-  if (contentWrap) {
-    window.addEventListener('scroll', function() {
-      var maxScroll = contentWrap.offsetTop + contentWrap.offsetHeight - window.innerHeight;
-      if (window.scrollY > maxScroll) {
-        window.scrollTo(0, maxScroll);
-      }
-    }, { passive: false });
-  }
 
 })();
 </script>
