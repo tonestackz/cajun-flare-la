@@ -1,0 +1,4 @@
+# Source artifacts (not needed for the deployed site)
+assets/hero-loop.mp4
+*.json
+!extract.json

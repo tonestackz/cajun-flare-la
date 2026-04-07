@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cajun Flare — Louisiana Bold. California Soul.</title>
+<meta name="description" content="Authentic Cajun cuisine from a Black woman-owned kitchen in Los Angeles. Seafood boils, gumbo, beignets, and more.">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+/* ─── Design System ─── */
+:root {
+  --bg: #1A1210;
+  --card: #241C18;
+  --text: #F5E6D3;
+  --muted: #8A7B6B;
+  --accent: #C23616;
+  --accent-light: rgba(194,54,22,0.08);
+  --border: #2E241E;
+  --cta: #D4872C;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background 0.8s, color 0.8s;
+}
+
+/* ─── Noise Overlay ─── */
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+}
+
+/* ─── Loader ─── */
+#loader {
+  position: fixed; inset: 0; z-index: 10000;
+  background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: opacity 0.6s;
+}
+.loader-fleur {
+  width: 48px; height: 48px;
+  animation: spin 2s linear infinite;
+  opacity: 0.6;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loader-text {
+  margin-top: 16px; font-size: 13px; color: var(--muted);
+  font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em;
+}
+.loader-bar { width: 120px; height: 2px; background: var(--border); border-radius: 2px; margin-top: 12px; overflow: hidden; }
+.loader-fill { height: 100%; width: 0%; background: var(--accent); border-radius: 2px; transition: width 0.3s; }
+
+/* ─── Navigation ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 16px 32px; display: flex; align-items: center; justify-content: space-between;
+  background: transparent;
+  transition: background 0.4s cubic-bezier(.16,1,.3,1), backdrop-filter 0.4s;
+}
+nav.scrolled {
+  background: rgba(26,18,16,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 800;
+  color: var(--text); text-decoration: none; letter-spacing: -0.02em;
+}
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a {
+  font-size: 14px; font-weight: 500; color: var(--text); text-decoration: none;
+  opacity: 0.8; transition: opacity 0.3s;
+}
+.nav-links a:hover { opacity: 1; }
+.nav-links .nav-cta {
+  background: var(--cta); color: #fff; padding: 8px 20px; border-radius: 8px;
+  font-weight: 600; opacity: 1;
+  transition: transform 0.2s cubic-bezier(.16,1,.3,1);
+}
+.nav-links .nav-cta:hover { transform: scale(1.03); }
+.nav-hamburger {
+  display: none; background: none; border: none; cursor: pointer; padding: 4px;
+}
+.nav-hamburger svg { stroke: var(--text); }
+.mobile-menu {
+  display: none; position: fixed; inset: 0; z-index: 99;
+  background: rgba(26,18,16,0.97); backdrop-filter: blur(20px);
+  flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700;
+  color: var(--text); text-decoration: none;
+}
+.mobile-menu .close-btn {
+  position: absolute; top: 20px; right: 24px; background: none; border: none;
+  cursor: pointer;
+}
+.mobile-menu .close-btn svg { stroke: var(--text); }
+
+/* ─── Hero ─── */
+.hero { height: 300vh; position: relative; z-index: 1; }
+.hero-sticky {
+  position: sticky; top: 0; height: 100vh; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Content wrapper sits above the hero stacking context */
+.content-wrap {
+  position: relative; z-index: 2; background: var(--bg);
+}
+#heroCanvas {
+  position: absolute; top: 0; left: 0; display: block; z-index: 1;
+}
+.hero-content {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 0;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif; font-size: clamp(36px, 8vw, 80px);
+  font-weight: 900; line-height: 1.05; letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  text-shadow: 0 4px 30px rgba(0,0,0,.9), 0 2px 10px rgba(0,0,0,.7), 0 0 60px rgba(0,0,0,.5);
+}
+.hero .subtitle {
+  font-size: clamp(14px, 2.5vw, 18px); font-weight: 400; line-height: 1.5;
+  max-width: 50ch; margin-bottom: 6px;
+  background: rgba(12,10,8,0.7); padding: 6px 16px; display: inline-block;
+  backdrop-filter: blur(4px); border-radius: 4px;
+}
+.hero .hero-cta {
+  margin-top: 20px; display: inline-block;
+  background: var(--cta); color: #fff; padding: 14px 36px;
+  font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 600;
+  border: none; border-radius: 10px; cursor: pointer; text-decoration: none;
+  transition: transform 0.2s cubic-bezier(.16,1,.3,1);
+}
+.hero .hero-cta:hover { transform: scale(1.05); }
+.hero .scroll-hint {
+  margin-top: 32px; font-size: 13px; color: var(--text);
+  background: rgba(12,10,8,0.7); padding: 4px 14px; display: inline-block;
+  backdrop-filter: blur(4px); border-radius: 4px;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+/* ─── Section Commons ─── */
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
+  text-align: center;
+}
+.section-heading {
+  font-family: 'Playfair Display', serif; font-size: clamp(28px, 5vw, 52px);
+  font-weight: 800; letter-spacing: -0.02em; text-align: center;
+  margin-bottom: 12px; line-height: 1.1;
+}
+.section-sub {
+  font-size: 17px; color: var(--text); opacity: 0.7; text-align: center;
+  max-width: 55ch; margin: 0 auto 48px; line-height: 1.6;
+}
+
+/* ─── Kinetic Marquee ─── */
+.marquee-band {
+  background: var(--text); padding: 20px 0; overflow: hidden;
+}
+.marquee-row {
+  display: flex; white-space: nowrap; will-change: transform; padding: 4px 0;
+}
+.marquee-row .marquee-item {
+  display: inline-flex; align-items: center;
+  font-size: clamp(24px, 5vw, 48px); font-weight: 700;
+  letter-spacing: -0.02em; color: var(--bg); padding: 0 32px;
+  flex-shrink: 0;
+}
+.marquee-row .marquee-item .fleur-sep {
+  display: inline-block; margin: 0 24px; opacity: 0.3;
+}
+.marquee-row .marquee-item .fleur-sep svg { width: 20px; height: 20px; }
+
+/* ─── How It Works — Spotlight Border Cards ─── */
+.how-section { padding: 100px 24px; max-width: 960px; margin: 0 auto; }
+.spot-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border); border-radius: 20px; overflow: hidden;
+}
+.spot-card {
+  background: var(--card); padding: 48px 32px; position: relative;
+  overflow: hidden; cursor: default;
+  transition: transform 0.4s cubic-bezier(.16,1,.3,1);
+}
+.spot-card::before {
+  content: ''; position: absolute; inset: -1px;
+  background: radial-gradient(circle 180px at var(--mx,50%) var(--my,50%), rgba(194,54,22,0.08), transparent);
+  opacity: 0; transition: opacity 0.3s; pointer-events: none;
+}
+.spot-card:hover::before { opacity: 1; }
+.spot-card:hover { transform: perspective(600px) rotateY(calc((var(--mx, 150) - 150) * 0.02deg)) rotateX(calc((var(--my, 100) - 100) * -0.02deg)) scale(1.01); }
+.spot-card .card-icon { margin-bottom: 20px; color: var(--accent); }
+.spot-card .card-icon svg { width: 36px; height: 36px; }
+.spot-card .card-step {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  font-weight: 500; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 12px;
+}
+.spot-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+.spot-card p { font-size: 15px; color: var(--text); opacity: 0.7; line-height: 1.5; }
+
+/* ─── Menu Highlights — Accordion Slider ─── */
+.menu-section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
+.accordion {
+  display: flex; gap: 8px;
+  height: 70vh; min-height: 400px; max-height: 600px;
+}
+.accordion-panel {
+  flex: 1; border-radius: 16px; overflow: hidden;
+  position: relative; cursor: pointer;
+  transition: flex 0.6s cubic-bezier(.16,1,.3,1);
+}
+.accordion-panel:hover, .accordion-panel.active { flex: 5; }
+.panel-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  transition: transform 0.6s cubic-bezier(.16,1,.3,1);
+}
+.accordion-panel:hover .panel-bg, .accordion-panel.active .panel-bg { transform: scale(1.05); }
+.panel-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,18,16,0.9) 0%, rgba(26,18,16,0.3) 40%, transparent 60%);
+}
+.panel-title {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  writing-mode: vertical-rl; text-orientation: mixed;
+  position: absolute; bottom: 28px; left: 16px;
+  transition: opacity 0.3s;
+}
+.accordion-panel:hover .panel-title, .accordion-panel.active .panel-title { opacity: 0; }
+.panel-content {
+  position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 24px; z-index: 2;
+}
+.panel-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 8px;
+  opacity: 0; transform: translateY(8px);
+  transition: all 0.4s cubic-bezier(.16,1,.3,1) 0.1s;
+}
+.panel-h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px; font-weight: 700; margin-bottom: 6px;
+  opacity: 0; transform: translateY(10px);
+  transition: all 0.4s cubic-bezier(.16,1,.3,1) 0.15s;
+}
+.panel-desc {
+  font-size: 14px; color: rgba(245,230,211,0.7); line-height: 1.5; max-width: 30ch;
+  opacity: 0; transform: translateY(10px);
+  transition: all 0.4s cubic-bezier(.16,1,.3,1) 0.2s;
+}
+.panel-cta {
+  display: inline-block; margin-top: 12px;
+  background: var(--cta); color: #fff; padding: 8px 20px;
+  font-size: 13px; font-weight: 600; border-radius: 8px; text-decoration: none;
+  opacity: 0; transform: translateY(10px);
+  transition: all 0.4s cubic-bezier(.16,1,.3,1) 0.25s;
+}
+.accordion-panel:hover .panel-num,
+.accordion-panel:hover .panel-h3,
+.accordion-panel:hover .panel-desc,
+.accordion-panel:hover .panel-cta,
+.accordion-panel.active .panel-num,
+.accordion-panel.active .panel-h3,
+.accordion-panel.active .panel-desc,
+.accordion-panel.active .panel-cta {
+  opacity: 1; transform: translateY(0);
+}
+
+/* ─── About / Story ─── */
+.about-section {
+  padding: 100px 24px; max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+.about-image {
+  border-radius: 16px; overflow: hidden; aspect-ratio: 4/5;
+}
+.about-image img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.6s cubic-bezier(.16,1,.3,1);
+}
+.about-image:hover img { transform: scale(1.03); }
+.about-text .about-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+}
+.about-text h2 {
+  font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800; margin-bottom: 20px; line-height: 1.1;
+}
+.about-text p {
+  font-size: 16px; line-height: 1.7; margin-bottom: 16px; color: var(--text); opacity: 0.85;
+}
+.about-text .highlight {
+  color: var(--accent); font-weight: 500; font-style: italic;
+}
+.about-cta {
+  display: inline-block; margin-top: 8px;
+  font-size: 15px; font-weight: 600; color: var(--cta);
+  text-decoration: none; border-bottom: 2px solid var(--cta);
+  padding-bottom: 2px;
+  transition: color 0.3s, border-color 0.3s;
+}
+.about-cta:hover { color: var(--text); border-color: var(--text); }
+
+/* ─── Order CTA — Particle Button ─── */
+.cta-section {
+  padding: 120px 24px; text-align: center;
+  min-height: 60vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.cta-section h2 {
+  font-family: 'Playfair Display', serif; font-size: clamp(36px, 7vw, 72px);
+  font-weight: 900; margin-bottom: 16px; line-height: 1.05;
+}
+.cta-section p {
+  font-size: 18px; color: var(--text); opacity: 0.7; margin-bottom: 40px;
+  max-width: 45ch; line-height: 1.6;
+}
+.explode-btn {
+  padding: 18px 56px; font-family: 'Outfit', sans-serif;
+  font-size: 18px; font-weight: 600; border: none; border-radius: 14px;
+  cursor: pointer; position: relative; z-index: 2;
+  background: var(--cta); color: #fff;
+  transition: transform 0.2s cubic-bezier(.16,1,.3,1);
+}
+.explode-btn:hover { transform: scale(1.05); }
+.explode-btn:active { transform: scale(0.95); }
+.particle {
+  position: fixed; width: 8px; height: 8px; border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+}
+
+/* ─── Fleur Divider ─── */
+.fleur-divider {
+  text-align: center; padding: 40px 0; opacity: 0.2;
+}
+.fleur-divider svg { width: 32px; height: 32px; }
+
+/* ─── Footer ─── */
+footer {
+  border-top: 1px solid var(--border); padding: 60px 24px;
+  max-width: 960px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px;
+}
+.footer-col h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
+}
+.footer-col p, .footer-col a {
+  font-size: 15px; color: var(--text); opacity: 0.7; line-height: 1.7;
+  text-decoration: none;
+}
+.footer-col a:hover { opacity: 1; }
+.footer-col .social-link {
+  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 8px;
+}
+.footer-bottom {
+  border-top: 1px solid var(--border); padding: 24px;
+  text-align: center; font-size: 13px; color: var(--muted);
+  max-width: 960px; margin: 0 auto;
+}
+
+/* ─── Cursor Glow ─── */
+#cursorGlow {
+  position: fixed; width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(194,54,22,0.04) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+  transform: translate(-250px, -250px);
+}
+
+/* ─── Scroll Animations ─── */
+.fade-up {
+  opacity: 0; transform: translateY(40px);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  nav { padding: 12px 20px; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: block; }
+  .hero h1 { font-size: clamp(32px, 10vw, 56px); }
+  .spot-grid { grid-template-columns: 1fr; }
+  .accordion {
+    flex-direction: column; height: auto; min-height: auto; max-height: none;
+  }
+  .accordion-panel { height: 70px; flex: none !important; }
+  .accordion-panel:hover, .accordion-panel.active { height: 300px; flex: none !important; }
+  .panel-title {
+    writing-mode: horizontal-tb; position: relative;
+    bottom: auto; left: auto; padding: 22px 20px;
+  }
+  .about-section { grid-template-columns: 1fr; gap: 40px; }
+  footer { grid-template-columns: 1fr; gap: 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div id="loader">
+  <svg class="loader-fleur" viewBox="0 0 32 32" fill="none" stroke="#C23616" stroke-width="1.5">
+    <path d="M16 2c0 8-6 14-14 14C10 16 16 22 16 30c0-8 6-14 14-14C22 16 16 10 16 2z"/>
+  </svg>
+  <div class="loader-text">Loading</div>
+  <div class="loader-bar"><div class="loader-fill" id="loaderFill"></div></div>
+</div>
+
+<!-- Cursor Glow -->
+<div id="cursorGlow"></div>
+
+<!-- Navigation -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">Cajun Flare</a>
+  <div class="nav-links">
+    <a href="#menu">Menu</a>
+    <a href="#how">How It Works</a>
+    <a href="#about">About</a>
+    <a href="https://cookconnect.com/Cajun-Flare" target="_blank" rel="noopener" class="nav-cta">Order Now</a>
+  </div>
+  <button class="nav-hamburger" onclick="document.getElementById('mobileMenu').classList.add('open')" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-btn" onclick="document.getElementById('mobileMenu').classList.remove('open')" aria-label="Close menu">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <a href="#menu" onclick="document.getElementById('mobileMenu').classList.remove('open')">Menu</a>
+  <a href="#how" onclick="document.getElementById('mobileMenu').classList.remove('open')">How It Works</a>
+  <a href="#about" onclick="document.getElementById('mobileMenu').classList.remove('open')">About</a>
+  <a href="https://cookconnect.com/Cajun-Flare" target="_blank" rel="noopener">Order Now</a>
+</div>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="hero-sticky">
+    <canvas id="heroCanvas"></canvas>
+    <div class="hero-content">
+      <h1>Louisiana Bold.<br>California Soul.</h1>
+      <div class="subtitle">Authentic Cajun cuisine from a Black woman-owned kitchen in LA</div>
+      <a href="https://cookconnect.com/Cajun-Flare" target="_blank" rel="noopener" class="hero-cta">Order Now</a>
+      <div class="scroll-hint">Scroll to explore</div>
+    </div>
+  </div>
+</section>
+
+<!-- Content wrapper — sits above hero z-index -->
+<div class="content-wrap">
+
+<!-- ═══════════ KINETIC MARQUEE ═══════════ -->
+<div class="marquee-band">
+  <div class="marquee-row" data-speed="0.8" data-direction="left">
+    <div class="marquee-content">
+      <span class="marquee-item">SEAFOOD BOILS<span class="fleur-sep"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 2c0 8-6 14-14 14C10 16 16 22 16 30c0-8 6-14 14-14C22 16 16 10 16 2z"/></svg></span></span>
+      <span class="marquee-item">BEIGNETS<span class="fleur-sep"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 2c0 8-6 14-14 14C10 16 16 22 16 30c0-8 6-14 14-14C22 16 16 10 16 2z"/></svg></span></span>
+      <span class="marquee-item">GUMBO<span class="fleur-sep"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 2c0 8-6 14-14 14C10 16 16 22 16 30c0-8 6-14 14-14C22 16 16 10 16 2z"/></svg></span></span>
+      <span class="marquee-item">PLATE LUNCHES<span class="fleur-sep"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 2c0 8-6 14-14 14C10 16 16 22 16 30c0-8 6-14 14-14C22 16 16 10 16 2z"/></svg></span></span>
+      <span class="marquee-item">CAJUN SOUL<span class="fleur-sep"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 2c0 8-6 14-14 14C10 16 16 22 16 30c0-8 6-14 14-14C22 16 16 10 16 2z"/></svg></span></span>
+      <span class="marquee-item">LOS ANGELES<span class="fleur-sep"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 2c0 8-6 14-14 14C10 16 16 22 16 30c0-8 6-14 14-14C22 16 16 10 16 2z"/></svg></span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ HOW IT WORKS ═══════════ -->
+<section class="how-section" id="how">
+  <div class="section-label fade-up">How It Works</div>
+  <h2 class="section-heading fade-up">From Bayou to Your Table</h2>
+  <p class="section-sub fade-up">Pre-order your Cajun favorites and pick up fresh. Simple as that.</p>
+  <div class="spot-grid" id="spotGrid">
+    <div class="spot-card fade-up">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+          <rect x="9" y="3" width="6" height="4" rx="1"/>
+          <path d="M9 14l2 2 4-4"/>
+        </svg>
+      </div>
+      <div class="card-step">Step 01</div>
+      <h3>Choose Your Boil</h3>
+      <p>Pick your seafood, protein, and spice level from our weekly or monthly menu.</p>
+    </div>
+    <div class="spot-card fade-up">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 6v6l4 2"/>
+        </svg>
+      </div>
+      <div class="card-step">Step 02</div>
+      <h3>Pre-Order Online</h3>
+      <p>Place your order before the cutoff date to guarantee availability. Everything is made fresh.</p>
+    </div>
+    <div class="spot-card fade-up">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <path d="M12 3l4 4-4 4"/>
+          <path d="M16 7H8"/>
+        </svg>
+      </div>
+      <div class="card-step">Step 03</div>
+      <h3>Pick Up Fresh</h3>
+      <p>Grab your order on pickup day, piping hot and ready to eat. Straight from our kitchen to your table.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ MENU HIGHLIGHTS — ACCORDION ═══════════ -->
+<section class="menu-section" id="menu" data-bg="#2A1510" data-text="#F5E6D3">
+  <div class="section-label fade-up">Our Menu</div>
+  <h2 class="section-heading fade-up">Taste the Bayou</h2>
+  <p class="section-sub fade-up">From our kitchen in Reseda to your table. Fresh, bold, and made with soul.</p>
+  <div class="accordion">
+    <div class="accordion-panel active">
+      <div class="panel-bg" style="background-image: url('https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=800&h=600&fit=crop&q=80');"></div>
+      <div class="panel-overlay"></div>
+      <div class="panel-title">Boils</div>
+      <div class="panel-content">
+        <div class="panel-num">Weekly Sundays</div>
+        <div class="panel-h3">Seafood Boils</div>
+        <div class="panel-desc">Shrimp, squid, blue crab, scallops, crawfish, corn, potatoes, and more. Choose your spice level.</div>
+        <a href="https://cookconnect.com/Cajun-Flare" target="_blank" rel="noopener" class="panel-cta">Order This Week's Boil</a>
+      </div>
+    </div>
+    <div class="accordion-panel">
+      <div class="panel-bg" style="background-image: url('https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&h=600&fit=crop&q=80');"></div>
+      <div class="panel-overlay"></div>
+      <div class="panel-title">Plates</div>
+      <div class="panel-content">
+        <div class="panel-num">Monthly Rotation</div>
+        <div class="panel-h3">Plate Lunches</div>
+        <div class="panel-desc">Jambalaya, gumbo, smothered okra, turkey wings and rice, crawfish fettuccine. A new feature every month.</div>
+        <a href="https://cookconnect.com/menus/meyev-Cajun-Flare" target="_blank" rel="noopener" class="panel-cta">See This Month's Plate</a>
+      </div>
+    </div>
+    <div class="accordion-panel">
+      <div class="panel-bg" style="background-image: url('https://images.unsplash.com/photo-1558326567-98ae2405596b?w=800&h=600&fit=crop&q=80');"></div>
+      <div class="panel-overlay"></div>
+      <div class="panel-title">Sweet</div>
+      <div class="panel-content">
+        <div class="panel-num">Always Available</div>
+        <div class="panel-h3">Desserts</div>
+        <div class="panel-desc">Beignets dusted with powdered sugar, sweet potato pies, and seasonal king cake. Louisiana sweetness.</div>
+        <a href="https://cookconnect.com/Cajun-Flare" target="_blank" rel="noopener" class="panel-cta">Order Desserts</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ABOUT / STORY ═══════════ -->
+<section class="about-section" id="about" data-bg="#1A2218" data-text="#F5E6D3">
+  <div class="about-image fade-up">
+    <img src="https://cajunflarela.com/wp-content/uploads/2025/12/Headshot.jpg" alt="Chelsea Franklin, owner and chef of Cajun Flare" loading="lazy">
+  </div>
+  <div class="about-text fade-up">
+    <div class="about-label">Our Story</div>
+    <h2>From Crowley to California</h2>
+    <p>My name is Chelsea, and I'm the owner and chef behind Cajun Flare. I'm originally from Crowley, Louisiana — the Rice Capital of America — and I started Cajun Flare to share the bold, soulful flavors of my hometown with my community here in L.A.</p>
+    <p class="highlight">Even the rice I use is sourced directly from the Crowley Rice Mill in my hometown — bringing an authentic piece of Louisiana to every plate.</p>
+    <p>My goal is to share real Louisiana flavor with people who crave food that's made from the heart — flavorful, filling, and unforgettable.</p>
+    <a href="https://www.instagram.com/cajunflare/" target="_blank" rel="noopener" class="about-cta">Follow @CajunFlare</a>
+  </div>
+</section>
+
+<!-- ═══════════ FLEUR DIVIDER ═══════════ -->
+<div class="fleur-divider" data-bg="#1A1210" data-text="#F5E6D3">
+  <svg viewBox="0 0 32 32" fill="currentColor">
+    <path d="M16 2c0 8-6 14-14 14C10 16 16 22 16 30c0-8 6-14 14-14C22 16 16 10 16 2z"/>
+  </svg>
+</div>
+
+<!-- ═══════════ ORDER CTA — PARTICLE BUTTON ═══════════ -->
+<section class="cta-section">
+  <div class="section-label fade-up">Don't Miss Out</div>
+  <h2 class="fade-up">Ready to Eat?</h2>
+  <p class="fade-up">Pre-order your Cajun favorites today. Made fresh, made bold, made with soul.</p>
+  <button class="explode-btn fade-up" id="orderBtn">Order Now</button>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="footer-col">
+    <h4>Cajun Flare</h4>
+    <p>Louisiana Bold. California Soul.</p>
+    <p style="margin-top:8px; font-size:13px;">Black woman-owned.<br>Reseda, Los Angeles, CA.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Contact</h4>
+    <p><a href="tel:3373841714">337-384-1714</a></p>
+    <p><a href="mailto:Chelsea@CajunFlareLA.com">Chelsea@CajunFlareLA.com</a></p>
+    <p style="margin-top:8px"><a href="https://cookconnect.com/Cajun-Flare" target="_blank" rel="noopener">Order on CookConnect</a></p>
+  </div>
+  <div class="footer-col">
+    <h4>Follow Us</h4>
+    <div class="social-link"><a href="https://www.instagram.com/cajunflare/" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+      Instagram</a></div>
+    <div class="social-link"><a href="https://www.tiktok.com/@cajunflare" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg>
+      TikTok</a></div>
+    <div class="social-link"><a href="https://www.facebook.com/cajunflare" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+      Facebook</a></div>
+  </div>
+</footer>
+<div class="footer-bottom">&copy; 2026 Cajun Flare. All rights reserved.</div>
+
+</div><!-- /.content-wrap -->
+
+<script>
+(function() {
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ─── Canvas Hero ─── */
+  var canvas = document.getElementById('heroCanvas');
+  var ctx = canvas.getContext('2d');
+  var frames = [];
+  var totalFrames = 192;
+  var loaded = 0;
+  var loaderFill = document.getElementById('loaderFill');
+
+  for (var i = 1; i <= totalFrames; i++) {
+    var img = new Image();
+    img.src = 'assets/frames/frame-' + String(i).padStart(4, '0') + '.jpg';
+    img.onload = function() {
+      loaded++;
+      var pct = Math.round((loaded / totalFrames) * 100);
+      loaderFill.style.width = pct + '%';
+      if (loaded === 1) drawFrame(0);
+      if (loaded >= totalFrames * 0.4) {
+        var loader = document.getElementById('loader');
+        if (loader && loader.style.opacity !== '0') {
+          loader.style.opacity = '0';
+          setTimeout(function() { loader.style.display = 'none'; }, 600);
+        }
+      }
+    };
+    frames.push(img);
+  }
+
+  function resize() {
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    canvas.width = w; canvas.height = h;
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function drawFrame(idx) {
+    if (!frames[idx] || !frames[idx].complete) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var r = Math.max(canvas.width / frames[idx].width, canvas.height / frames[idx].height);
+    var w = frames[idx].width * r, h = frames[idx].height * r;
+    ctx.drawImage(frames[idx], (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
+  }
+
+  gsap.to({ frame: 0 }, {
+    frame: totalFrames - 1,
+    snap: 'frame',
+    ease: 'none',
+    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.3 },
+    onUpdate: function() { drawFrame(Math.round(this.targets()[0].frame)); }
+  });
+
+  /* Hero text fade out */
+  gsap.to('.hero-content', {
+    opacity: 0, y: -60, ease: 'none',
+    scrollTrigger: { trigger: '.hero', start: '10% top', end: '35% top', scrub: true }
+  });
+
+  /* ─── Nav scroll state ─── */
+  ScrollTrigger.create({
+    start: 80,
+    onUpdate: function(self) {
+      document.getElementById('mainNav').classList.toggle('scrolled', self.progress > 0);
+    }
+  });
+
+  /* ─── Kinetic Marquee ─── */
+  document.querySelectorAll('.marquee-row').forEach(function(row) {
+    var content = row.querySelector('.marquee-content');
+    var clone = content.cloneNode(true);
+    row.appendChild(clone);
+  });
+
+  var scrollVelocity = 0;
+  ScrollTrigger.create({
+    onUpdate: function(self) { scrollVelocity = Math.abs(self.getVelocity()); }
+  });
+
+  document.querySelectorAll('.marquee-row').forEach(function(row) {
+    var content = row.querySelector('.marquee-content');
+    var direction = row.dataset.direction === 'right' ? 1 : -1;
+    var speedMult = parseFloat(row.dataset.speed) || 1;
+    var contentWidth = content.offsetWidth;
+    var x = direction === -1 ? 0 : -contentWidth;
+
+    function animate() {
+      var speed = (80 + scrollVelocity * 0.15) * speedMult;
+      x += direction * -1 * speed / 60;
+      if (direction === -1 && x <= -contentWidth) x += contentWidth;
+      if (direction === 1 && x >= 0) x -= contentWidth;
+      row.style.transform = 'translateX(' + x + 'px)';
+      requestAnimationFrame(animate);
+    }
+    animate();
+  });
+
+  /* ─── Spotlight Border Cards ─── */
+  var spotGrid = document.getElementById('spotGrid');
+  if (spotGrid) {
+    spotGrid.addEventListener('mousemove', function(e) {
+      spotGrid.querySelectorAll('.spot-card').forEach(function(c) {
+        var r = c.getBoundingClientRect();
+        c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+  }
+
+  /* ─── Accordion click lock ─── */
+  document.querySelectorAll('.accordion-panel').forEach(function(panel) {
+    panel.addEventListener('click', function() {
+      var siblings = panel.parentElement.children;
+      for (var i = 0; i < siblings.length; i++) siblings[i].classList.remove('active');
+      panel.classList.add('active');
+    });
+  });
+
+  /* ─── Color Shift ─── */
+  document.querySelectorAll('[data-bg]').forEach(function(s) {
+    ScrollTrigger.create({
+      trigger: s, start: 'top 60%', end: 'bottom 40%',
+      onEnter: function() { document.body.style.background = s.dataset.bg; document.body.style.color = s.dataset.text; },
+      onEnterBack: function() { document.body.style.background = s.dataset.bg; document.body.style.color = s.dataset.text; }
+    });
+  });
+
+  /* ─── Particle Button ─── */
+  var orderBtn = document.getElementById('orderBtn');
+  if (orderBtn) {
+    orderBtn.addEventListener('click', function(e) {
+      var rect = orderBtn.getBoundingClientRect();
+      var cx = rect.left + rect.width / 2;
+      var cy = rect.top + rect.height / 2;
+      for (var i = 0; i < 24; i++) {
+        var p = document.createElement('div');
+        p.className = 'particle';
+        p.style.background = i % 2 === 0 ? '#D4872C' : '#C23616';
+        p.style.left = cx + 'px'; p.style.top = cy + 'px';
+        document.body.appendChild(p);
+        var angle = Math.random() * Math.PI * 2;
+        var dist = 40 + Math.random() * 100;
+        var dx = Math.cos(angle) * dist;
+        var dy = Math.sin(angle) * dist - 40;
+        p.style.transition = 'all .7s cubic-bezier(.16,1,.3,1)';
+        p.offsetHeight;
+        p.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(0)';
+        p.style.opacity = '0';
+        setTimeout(function(el) { el.remove(); }, 800, p);
+      }
+      setTimeout(function() {
+        window.open('https://cookconnect.com/Cajun-Flare', '_blank');
+      }, 800);
+    });
+  }
+
+  /* ─── Cursor Glow ─── */
+  var glow = document.getElementById('cursorGlow');
+  var mx = 0, my = 0, gx = 0, gy = 0;
+  document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; });
+  function moveGlow() {
+    gx += (mx - gx) * 0.1; gy += (my - gy) * 0.1;
+    glow.style.transform = 'translate(' + (gx - 250) + 'px,' + (gy - 250) + 'px)';
+    requestAnimationFrame(moveGlow);
+  }
+  moveGlow();
+
+  /* ─── Magnetic CTA buttons ─── */
+  document.querySelectorAll('.hero-cta, .nav-cta, .explode-btn').forEach(function(btn) {
+    btn.addEventListener('mousemove', function(e) {
+      var rect = btn.getBoundingClientRect();
+      var cx = rect.left + rect.width / 2;
+      var cy = rect.top + rect.height / 2;
+      btn.style.transform = 'translate(' + ((e.clientX - cx) * 0.25) + 'px,' + ((e.clientY - cy) * 0.25) + 'px) scale(1.03)';
+    });
+    btn.addEventListener('mouseleave', function() {
+      btn.style.transform = 'translate(0,0) scale(1)';
+    });
+  });
+
+  /* ─── Scroll Fade-Up Animations ─── */
+  gsap.utils.toArray('.fade-up').forEach(function(el) {
+    gsap.to(el, {
+      opacity: 1, y: 0, duration: 0.8,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+    });
+  });
+
+})();
+</script>
+</body>
+</html>

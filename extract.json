@@ -1,0 +1,82 @@
+{
+  "business": {
+    "name": "Cajun Flare",
+    "tagline": "Louisiana Bold. California Soul.",
+    "category": "Cajun Restaurant / Home Kitchen",
+    "owner": "Chelsea Franklin",
+    "origin": "Crowley, Louisiana (Rice Capital of America)",
+    "location": "7841 Reseda Blvd, Reseda, Los Angeles, CA",
+    "phone": "337-384-1714",
+    "email": "Chelsea@CajunFlareLA.com",
+    "website": "cajunflarela.com",
+    "ordering_url": "https://cookconnect.com/Cajun-Flare",
+    "monthly_menu_url": "https://cookconnect.com/menus/meyev-Cajun-Flare"
+  },
+  "social": {
+    "instagram": "@CajunFlare",
+    "tiktok": "CajunFlare",
+    "facebook": "Cajun Flare",
+    "twitter": "@CajunFlareLA"
+  },
+  "brand": {
+    "colors": {
+      "background": "#1A1210",
+      "card": "#241C18",
+      "text": "#F5E6D3",
+      "muted": "#8A7B6B",
+      "accent": "#C23616",
+      "accent_light": "rgba(194,54,22,0.08)",
+      "border": "#2E241E",
+      "cta": "#D4872C"
+    },
+    "fonts": {
+      "heading": "Playfair Display",
+      "body": "Outfit",
+      "mono": "JetBrains Mono"
+    },
+    "original_colors": {
+      "primary": "#b22416",
+      "secondary": "#f3834a",
+      "gradient": "linear-gradient(#b22416, #f3834a)"
+    }
+  },
+  "copy": {
+    "headline": "Louisiana Bold. California Soul.",
+    "subtitle": "Authentic Cajun cuisine from a Black woman-owned kitchen in LA",
+    "cta_primary": "Order Now",
+    "cta_secondary": "View Menu"
+  },
+  "offerings": {
+    "weekly_seafood_boils": {
+      "description": "Every Sunday — shrimp, squid, blue crab, scallops, seasonal crawfish, plus vegetarian options",
+      "items": ["Shrimp", "Squid", "Blue Crab", "Scallops", "Crawfish", "Corn", "Potatoes", "Broccoli", "Sweet Onions", "Mushrooms"]
+    },
+    "monthly_plate_lunches": {
+      "description": "Rotating monthly menu — made fresh in small batches",
+      "items": ["Jambalaya", "Gumbo", "Smothered Okra", "Turkey Wings & Rice", "Crawfish Fettuccine"]
+    },
+    "desserts": {
+      "description": "Louisiana sweetness to finish things off",
+      "items": ["Beignets", "Sweet Potato Pies", "King Cake"]
+    },
+    "large_orders": {
+      "description": "Custom and large orders available with 96 hours advance notice",
+      "contact": "337-384-1714 or Chelsea@CajunFlareLA.com"
+    }
+  },
+  "story": {
+    "bio": "My name is Chelsea, and I'm the owner and chef behind Cajun Flare. I'm originally from Crowley, Louisiana — the Rice Capital of America — and I started Cajun Flare to share the bold, soulful flavors of my hometown with my community here in L.A.",
+    "differentiator": "Even the rice I use is sourced directly from the Crowley Rice Mill in my hometown — bringing an authentic piece of Louisiana to every plate.",
+    "mission": "My goal is to share real Louisiana flavor with people who crave food that's made from the heart — flavorful, filling, and unforgettable."
+  },
+  "images": {
+    "logo": "https://cajunflarela.com/wp-content/uploads/2025/12/cropped-cropped-cropped-Transparent-Vertical-Logo-365x121.png",
+    "seafood_boil": "https://cajunflarela.com/wp-content/uploads/2025/12/Subject-2-768x681.png",
+    "gumbo": "https://cajunflarela.com/wp-content/uploads/2025/12/IMG_8430-768x904.png",
+    "plate_lunch": "https://cajunflarela.com/wp-content/uploads/2025/12/IMG_0748-scaled-e1766373733668-768x1017.jpeg",
+    "dessert": "https://cajunflarela.com/wp-content/uploads/2025/12/IMG_1529-768x850.jpg",
+    "headshot": "https://cajunflarela.com/wp-content/uploads/2025/12/Headshot-300x275.jpg",
+    "louisiana_badge": "https://cajunflarela.com/wp-content/uploads/2025/12/Louisiana-logo.png",
+    "fleur_de_lis": "https://cajunflarela.com/wp-content/uploads/2026/02/fleur-de-lis-e1770014604368-280x300.png"
+  }
+}
