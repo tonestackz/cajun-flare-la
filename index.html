@@ -462,6 +462,11 @@ footer {
   .nav-links { display: none; }
   .nav-hamburger { display: block; }
   .hero h1 { font-size: clamp(32px, 10vw, 56px); }
+  .hero .subtitle {
+    display: inline; padding: 4px 12px; font-size: 14px;
+    line-height: 1.6; max-width: 90vw;
+  }
+  .hero .hero-cta { padding: 12px 28px; font-size: 15px; }
   .spot-grid { grid-template-columns: 1fr; }
   .accordion {
     flex-direction: column; height: auto; min-height: auto; max-height: none;
@@ -473,10 +478,18 @@ footer {
     bottom: auto; left: auto; padding: 22px 20px;
   }
   .about-header { flex-direction: column; text-align: center; }
+  .about-section { padding: 60px 20px; }
+  .about-body p { font-size: 15px; }
+  .cta-section { padding: 80px 24px; min-height: 40vh; }
+  .footer-top { margin-bottom: 40px; }
   .footer-grid { grid-template-columns: 1fr; gap: 32px; text-align: center; }
-  .urgency-bar { font-size: 12px; }
+  .urgency-bar { font-size: 12px; padding: 8px 16px; }
+  .urgency-bar .urgency-inner { flex-wrap: wrap; gap: 6px; }
   .urgency-bar .countdown { font-size: 13px; }
+  .map-section { padding: 60px 20px; }
   .map-info { top: 10px; left: 10px; padding: 12px 14px; }
+  .section-heading { font-size: clamp(24px, 6vw, 40px); }
+  .section-sub { font-size: 15px; }
 }
 </style>
 </head>
@@ -683,7 +696,7 @@ footer {
 </section>
 
 <!-- ═══════════ PICKUP MAP ═══════════ -->
-<section class="map-section fade-up">
+<section class="map-section fade-up" data-bg="#1A1210" data-text="#F5E6D3">
   <div class="section-label">Find Us</div>
   <h2 class="section-heading">Pickup Location</h2>
   <p class="section-sub">Reseda, Los Angeles. Your Cajun fix is closer than you think.</p>
@@ -766,7 +779,7 @@ footer {
       var pct = Math.round((loaded / totalFrames) * 100);
       loaderFill.style.width = pct + '%';
       if (loaded === 1) drawFrame(0);
-      if (loaded >= totalFrames * 0.4) {
+      if (loaded >= Math.min(totalFrames * 0.2, 30)) {
         var loader = document.getElementById('loader');
         if (loader && loader.style.opacity !== '0') {
           loader.style.opacity = '0';
@@ -776,6 +789,15 @@ footer {
     };
     frames.push(img);
   }
+
+  // Failsafe: dismiss loader after 3s regardless
+  setTimeout(function() {
+    var loader = document.getElementById('loader');
+    if (loader && loader.style.display !== 'none') {
+      loader.style.opacity = '0';
+      setTimeout(function() { loader.style.display = 'none'; }, 600);
+    }
+  }, 3000);
 
   function resize() {
     var w = window.innerWidth;
