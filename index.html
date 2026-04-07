@@ -71,9 +71,11 @@ nav.scrolled {
   border-bottom: 1px solid var(--border);
 }
 .nav-logo {
+  display: flex; align-items: center; gap: 10px;
   font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 800;
   color: var(--text); text-decoration: none; letter-spacing: -0.02em;
 }
+.nav-logo img { height: 36px; width: auto; }
 .nav-links { display: flex; gap: 28px; align-items: center; }
 .nav-links a {
   font-size: 14px; font-weight: 500; color: var(--text); text-decoration: none;
@@ -429,7 +431,7 @@ footer {
 
 <!-- Navigation -->
 <nav id="mainNav">
-  <a href="#" class="nav-logo">Cajun Flare</a>
+  <a href="#" class="nav-logo"><img src="assets/logo.png" alt="Cajun Flare logo">Cajun Flare</a>
   <div class="nav-links">
     <a href="#menu">Menu</a>
     <a href="#how">How It Works</a>
@@ -533,7 +535,7 @@ footer {
   <p class="section-sub fade-up">From our kitchen in Reseda to your table. Fresh, bold, and made with soul.</p>
   <div class="accordion">
     <div class="accordion-panel active">
-      <div class="panel-bg" style="background-image: url('https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=800&h=600&fit=crop&q=80');"></div>
+      <div class="panel-bg" style="background-image: url('assets/cajun-shrimp.png');"></div>
       <div class="panel-overlay"></div>
       <div class="panel-title">Boils</div>
       <div class="panel-content">
@@ -544,7 +546,7 @@ footer {
       </div>
     </div>
     <div class="accordion-panel">
-      <div class="panel-bg" style="background-image: url('https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&h=600&fit=crop&q=80');"></div>
+      <div class="panel-bg" style="background-image: url('assets/crawfish-fettuccine.png');"></div>
       <div class="panel-overlay"></div>
       <div class="panel-title">Plates</div>
       <div class="panel-content">
@@ -555,7 +557,7 @@ footer {
       </div>
     </div>
     <div class="accordion-panel">
-      <div class="panel-bg" style="background-image: url('https://images.unsplash.com/photo-1558326567-98ae2405596b?w=800&h=600&fit=crop&q=80');"></div>
+      <div class="panel-bg" style="background-image: url('assets/beignets.png');"></div>
       <div class="panel-overlay"></div>
       <div class="panel-title">Sweet</div>
       <div class="panel-content">
@@ -571,7 +573,7 @@ footer {
 <!-- ═══════════ ABOUT / STORY ═══════════ -->
 <section class="about-section" id="about" data-bg="#1A2218" data-text="#F5E6D3">
   <div class="about-image fade-up">
-    <img src="https://cajunflarela.com/wp-content/uploads/2025/12/Headshot.jpg" alt="Chelsea Franklin, owner and chef of Cajun Flare" loading="lazy">
+    <img src="assets/shrimp-pasta.png" alt="Cajun Flare shrimp pasta with caesar salad" loading="lazy">
   </div>
   <div class="about-text fade-up">
     <div class="about-label">Our Story</div>
@@ -601,6 +603,7 @@ footer {
 <!-- ═══════════ FOOTER ═══════════ -->
 <footer>
   <div class="footer-col">
+    <img src="assets/logo.png" alt="Cajun Flare" style="height:48px;width:auto;margin-bottom:12px">
     <h4>Cajun Flare</h4>
     <p>Louisiana Bold. California Soul.</p>
     <p style="margin-top:8px; font-size:13px;">Black woman-owned.<br>Reseda, Los Angeles, CA.</p>
