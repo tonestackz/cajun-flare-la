@@ -358,27 +358,52 @@ nav.scrolled {
 
 /* ─── Footer ─── */
 footer {
-  border-top: 1px solid var(--border); padding: 60px 24px;
-  max-width: 960px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px;
+  border-top: 1px solid var(--border); padding: 80px 24px 40px;
+  max-width: 1000px; margin: 0 auto;
 }
-.footer-col h4 {
+.footer-top {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; margin-bottom: 60px;
+}
+.footer-logo { height: 80px; width: auto; margin-bottom: 16px; }
+.footer-brand {
+  font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 800;
+  letter-spacing: -0.02em; margin-bottom: 6px;
+}
+.footer-tagline { font-size: 15px; color: var(--muted); margin-bottom: 24px; }
+.footer-socials { display: flex; gap: 16px; }
+.footer-socials a {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+  color: var(--text); text-decoration: none;
+  transition: all 0.3s cubic-bezier(.16,1,.3,1);
+}
+.footer-socials a:hover { border-color: var(--cta); color: var(--cta); transform: translateY(-2px); }
+.footer-socials a svg { width: 18px; height: 18px; }
+.footer-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px;
+  padding-top: 40px; border-top: 1px solid var(--border);
+}
+.footer-grid h4 {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
 }
-.footer-col p, .footer-col a {
-  font-size: 15px; color: var(--text); opacity: 0.7; line-height: 1.7;
-  text-decoration: none;
+.footer-grid p, .footer-grid a {
+  font-size: 14px; color: var(--text); opacity: 0.7; line-height: 1.8;
+  text-decoration: none; display: block;
 }
-.footer-col a:hover { opacity: 1; }
-.footer-col .social-link {
-  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 8px;
-}
+.footer-grid a:hover { opacity: 1; color: var(--cta); }
 .footer-bottom {
   border-top: 1px solid var(--border); padding: 24px;
-  text-align: center; font-size: 13px; color: var(--muted);
-  max-width: 960px; margin: 0 auto;
+  text-align: center; font-size: 12px; color: var(--muted);
+  max-width: 1000px; margin: 20px auto 0;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.footer-bottom .owned-badge {
+  background: var(--accent); color: #fff; font-size: 10px; font-weight: 700;
+  padding: 3px 10px; border-radius: 100px; letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 /* ─── Cursor Glow ─── */
@@ -449,7 +474,7 @@ footer {
     bottom: auto; left: auto; padding: 22px 20px;
   }
   .about-section { grid-template-columns: 1fr; gap: 40px; }
-  footer { grid-template-columns: 1fr; gap: 32px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; text-align: center; }
   .urgency-bar { font-size: 12px; }
   .urgency-bar .countdown { font-size: 13px; }
   .map-info { top: 10px; left: 10px; padding: 12px 14px; }
@@ -668,32 +693,50 @@ footer {
 
 <!-- ═══════════ FOOTER ═══════════ -->
 <footer>
-  <div class="footer-col">
-    <img src="assets/logo.png" alt="Cajun Flare" style="height:48px;width:auto;margin-bottom:12px">
-    <h4>Cajun Flare</h4>
-    <p>Louisiana Bold. California Soul.</p>
-    <p style="margin-top:8px; font-size:13px;">Black woman-owned.<br>Reseda, Los Angeles, CA.</p>
+  <!-- Centered logo + brand + socials -->
+  <div class="footer-top">
+    <img src="assets/logo.png" alt="Cajun Flare" class="footer-logo">
+    <div class="footer-brand">Cajun Flare</div>
+    <div class="footer-tagline">Louisiana Bold. California Soul.</div>
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/cajunflare/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@cajunflare" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg>
+      </a>
+      <a href="https://www.facebook.com/cajunflare" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+      </a>
+    </div>
   </div>
-  <div class="footer-col">
-    <h4>Contact</h4>
-    <p><a href="tel:3373841714">337-384-1714</a></p>
-    <p><a href="mailto:Chelsea@CajunFlareLA.com">Chelsea@CajunFlareLA.com</a></p>
-    <p style="margin-top:8px"><a href="https://cookconnect.com/Cajun-Flare" target="_blank" rel="noopener">Order on CookConnect</a></p>
-  </div>
-  <div class="footer-col">
-    <h4>Follow Us</h4>
-    <div class="social-link"><a href="https://www.instagram.com/cajunflare/" target="_blank" rel="noopener">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-      Instagram</a></div>
-    <div class="social-link"><a href="https://www.tiktok.com/@cajunflare" target="_blank" rel="noopener">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg>
-      TikTok</a></div>
-    <div class="social-link"><a href="https://www.facebook.com/cajunflare" target="_blank" rel="noopener">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-      Facebook</a></div>
+
+  <!-- Info grid -->
+  <div class="footer-grid">
+    <div>
+      <h4>Hours</h4>
+      <p>Seafood Boils: Sundays</p>
+      <p>Plate Lunches: Monthly</p>
+      <p>Desserts: Always Available</p>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <a href="tel:3373841714">337-384-1714</a>
+      <a href="mailto:Chelsea@CajunFlareLA.com">Chelsea@CajunFlareLA.com</a>
+      <a href="https://cookconnect.com/Cajun-Flare" target="_blank" rel="noopener">Order on CookConnect</a>
+    </div>
+    <div>
+      <h4>Location</h4>
+      <p>7841 Reseda Blvd</p>
+      <p>Reseda, Los Angeles, CA</p>
+      <a href="https://maps.google.com/?q=7841+Reseda+Blvd+Reseda+CA" target="_blank" rel="noopener" style="margin-top:4px">Get Directions</a>
+    </div>
   </div>
 </footer>
-<div class="footer-bottom">&copy; 2026 Cajun Flare. All rights reserved.</div>
+<div class="footer-bottom">
+  <span class="owned-badge">Black Woman-Owned</span>
+  <span>&copy; 2026 Cajun Flare. All rights reserved.</span>
+</div>
 
 </div><!-- /.content-wrap -->
 
