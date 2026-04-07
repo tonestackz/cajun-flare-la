@@ -958,11 +958,22 @@ footer {
   /* ─── Nav offset for urgency bar ─── */
   var urgencyBar = document.getElementById('urgencyBar');
   var mainNav = document.getElementById('mainNav');
-  function updateNavTop() {
-    if (urgencyBar && mainNav) mainNav.style.top = urgencyBar.offsetHeight + 'px';
+  var barHeight = urgencyBar ? urgencyBar.offsetHeight : 0;
+  function updateNavPos() {
+    if (!urgencyBar || !mainNav) return;
+    var scrolled = window.scrollY;
+    if (scrolled >= barHeight) {
+      mainNav.style.top = '0px';
+    } else {
+      mainNav.style.top = (barHeight - scrolled) + 'px';
+    }
   }
-  updateNavTop();
-  window.addEventListener('resize', updateNavTop);
+  updateNavPos();
+  window.addEventListener('scroll', updateNavPos, { passive: true });
+  window.addEventListener('resize', function() {
+    barHeight = urgencyBar.offsetHeight;
+    updateNavPos();
+  });
 
 })();
 </script>
