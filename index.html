@@ -461,35 +461,60 @@ footer {
   nav { padding: 12px 20px; top: 40px; }
   .nav-links { display: none; }
   .nav-hamburger { display: block; }
+
+  /* Hero — shorter on mobile so image stays visible */
+  .hero { height: 200vh; }
   .hero h1 { font-size: clamp(32px, 10vw, 56px); }
   .hero .subtitle {
     display: inline; padding: 4px 12px; font-size: 14px;
     line-height: 1.6; max-width: 90vw;
   }
   .hero .hero-cta { padding: 12px 28px; font-size: 15px; }
+  .hero .scroll-hint { margin-top: 20px; }
+
+  /* Tighter section spacing on mobile */
+  .how-section { padding: 60px 20px; }
+  .menu-section { padding: 60px 20px; }
+  .section-sub { margin-bottom: 32px; }
+  .section-heading { font-size: clamp(24px, 6vw, 40px); }
+  .section-sub { font-size: 15px; }
+
   .spot-grid { grid-template-columns: 1fr; }
+  .spot-card { padding: 32px 24px; }
+
   .accordion {
     flex-direction: column; height: auto; min-height: auto; max-height: none;
   }
   .accordion-panel { height: 70px; flex: none !important; }
-  .accordion-panel:hover, .accordion-panel.active { height: 300px; flex: none !important; }
+  .accordion-panel:hover, .accordion-panel.active { height: 280px; flex: none !important; }
   .panel-title {
     writing-mode: horizontal-tb; position: relative;
     bottom: auto; left: auto; padding: 22px 20px;
   }
+
+  .cta-section { padding: 60px 24px; min-height: auto; }
+
   .about-header { flex-direction: column; text-align: center; }
-  .about-section { padding: 60px 20px; }
+  .about-section { padding: 50px 20px; }
   .about-body p { font-size: 15px; }
-  .cta-section { padding: 80px 24px; min-height: 40vh; }
+
+  .fleur-divider { padding: 24px 0; }
+
+  .map-section { padding: 50px 20px; }
+  .map-info { top: 10px; left: 10px; padding: 12px 14px; }
+
   .footer-top { margin-bottom: 40px; }
-  .footer-grid { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+  footer { padding: 50px 20px 30px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 28px; text-align: center; }
+
+  .marquee-band { padding: 12px 0; }
+  .marquee-row .marquee-item { font-size: 20px; padding: 0 16px; }
+  .marquee-row .marquee-item .fleur-sep { margin: 0 12px; }
+  .marquee-row .marquee-item .fleur-sep svg { width: 14px; height: 14px; }
+
   .urgency-bar { font-size: 12px; padding: 8px 16px; }
   .urgency-bar .urgency-inner { flex-wrap: wrap; gap: 6px; }
   .urgency-bar .countdown { font-size: 13px; }
-  .map-section { padding: 60px 20px; }
-  .map-info { top: 10px; left: 10px; padding: 12px 14px; }
-  .section-heading { font-size: clamp(24px, 6vw, 40px); }
-  .section-sub { font-size: 15px; }
 }
 </style>
 </head>
