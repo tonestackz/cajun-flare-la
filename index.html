@@ -22,7 +22,7 @@
   --cta: #D4872C;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; background: #1A1210; }
 body {
   background: var(--bg); color: var(--text);
   font-family: 'Outfit', sans-serif;
@@ -119,6 +119,7 @@ nav.scrolled {
 /* Content wrapper sits above the hero stacking context */
 .content-wrap {
   position: relative; z-index: 2; background: var(--bg);
+  padding-bottom: 1px; /* prevent margin collapse */
 }
 #heroCanvas {
   position: absolute; top: 0; left: 0; display: block; z-index: 1;
@@ -397,7 +398,7 @@ footer {
 }
 .footer-grid a:hover { opacity: 1; color: var(--cta); }
 .footer-bottom {
-  border-top: 1px solid var(--border); padding: 24px;
+  border-top: 1px solid var(--border); padding: 24px 24px 40px;
   text-align: center; font-size: 12px; color: var(--muted);
   max-width: 1000px; margin: 20px auto 0;
   display: flex; align-items: center; justify-content: center; gap: 8px;
